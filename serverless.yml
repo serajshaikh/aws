@@ -1,0 +1,101 @@
+service: myserverlessproject
+
+provider:
+    name: aws
+    runtime: nodejs14.x
+    profile: serverlessUser
+    region: us-east-1
+    environment:
+        tableName: ${self:custom.tableName}
+    iamRoleStatements:
+        - Effect: Allow
+          Action:
+              - dynamodb:*
+          Resource: '*'
+
+plugins:
+    - serverless-webpack
+
+package:
+    individually: true
+
+custom:
+    tableName: employee-details
+
+functions:
+    getEmpDetails:
+        handler: lambdas/endpoints/getEmpDetails.handler
+        events:
+            - http:
+                  path: get-emp-details/{ID}
+                  method: GET
+                  cors: true
+                  
+    createEmpDetails:
+        handler: lambdas/endpoints/createEmpDetails.handler
+        events:
+            - http:
+                  path: create-emp-details/{ID}
+                  method: POST
+                  cors: true
+
+    deleteEmpDetails:
+        handler: lambdas/endpoints/deleteEmpDetails.handler
+        events:
+            - http:
+                  path: delete-emp-details/{ID}
+                  method: POST
+                  cors: true
+    updateEmpDetails:
+        handler: lambdas/endpoints/updateEmpDetails.handler
+        events:
+            - http:
+                  path: update-emp-details/{ID}
+                  method: POST
+                  cors: true
+    listEmpDetails:
+        handler: lambdas/endpoints/listEmpDetails.handler
+        events:
+            - http:
+                  path: list-emp-details/{tableName}
+                  method: POST
+                  cors: true
+
+
+   
+resources:
+    Resources:
+        MyDynamoDbTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: ${self:custom.tableName}
+                AttributeDefinitions:
+                    - AttributeName: ID
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: ID
+                      KeyType: HASH
+                BillingMode: PAY_PER_REQUEST
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# yesterday I was creating a DynamoDB API where I am trying to Add, delete,  Read , and update record into the API using API Gateway and AWS Lambda, adding the record int table I have completed, remaining task I am compleating.....

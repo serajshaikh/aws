@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.202.0",
+    "@aws-sdk/util-dynamodb": "^3.202.0",
+    "aws-crt": "^1.14.5",
+    "serverless-s3-sync": "^3.1.0",
+    "serverless-webpack": "^5.10.0"
+  }
+}
