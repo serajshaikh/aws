@@ -83,19 +83,3 @@ resources:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# yesterday I was creating a DynamoDB API where I am trying to Add, delete,  Read , and update record into the API using API Gateway and AWS Lambda, adding the record int table I have completed, remaining task I am compleating.....
