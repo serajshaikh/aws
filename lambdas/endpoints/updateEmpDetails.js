@@ -5,6 +5,8 @@ const tableName = process.env.tableName;
 
 exports.handler = async event => {
     console.log('event', event);
+    const body=JSON.parse(event.body);
+    const objKeys = Object.keys(body);
     if (!event.pathParameters || !event.pathParameters.ID) {
         // failed without an ID
         return Responses._Error400({ message: 'missing the ID from the path' });
@@ -12,7 +14,7 @@ exports.handler = async event => {
 
     let ID = event.pathParameters.ID;
 
-    const user = await Dynamo.updateItem(ID, tableName).catch(err => {
+    const user = await Dynamo.updateItem(ID, tableName, body, objKeys).catch(err => {
         console.log('error occurred updating item into table', err);
         return null;
     });

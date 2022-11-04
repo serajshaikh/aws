@@ -1,13 +1,7 @@
 // **************************** DynamoDB Client - AWS SDK for JavaScript v3 ****************************
 
 const db = require("./db");
-const {
-    GetItemCommand,
-    PutItemCommand,
-    DeleteItemCommand,
-    ScanCommand,
-    UpdateItemCommand,
-} = require("@aws-sdk/client-dynamodb");
+const {GetItemCommand, PutItemCommand, DeleteItemCommand, ScanCommand, UpdateItemCommand,} = require("@aws-sdk/client-dynamodb");
 const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
 
 const Dynamo = {
@@ -63,11 +57,23 @@ const Dynamo = {
 
     },
 
-    async updateItem(ID, TableName) {
+    async updateItem(ID, TableName, body, objKeys) {
+
         try {
+            console.log("Body Element is ", body);
+            console.log("objectKeys are:", objKeys);
             const params = {
                 TableName: TableName,
-                Key: marshall({ ID: ID })
+                Key: marshall({ ID: ID }),
+                UpdateExpression: `SET ${objKeys.map((_, index) => `#key${index} = :value${index}`).join(", ")}`,
+                ExpressionAttributeNames: objKeys.reduce((acc, key, index) => ({
+                    ...acc,
+                    [`#key${index}`]: key,
+                }), {}),
+                ExpressionAttributeValues: marshall(objKeys.reduce((acc, key, index) => ({
+                    ...acc,
+                    [`:value${index}`]: body[key],
+                }), {})),
             };
             const updatedItem = await db.send(new UpdateItemCommand(params));
             return updatedItem;
@@ -83,7 +89,7 @@ const Dynamo = {
                 TableName: TableName
             };
             const allListedItem = await db.send(new ScanCommand(params));
-            return allListedItem.map((item) => unmarshall(item))
+            return allListedItem.Items.map((item) => unmarshall(item));
         } catch (e) {
             console.error(e);
             return `Error Putting data into table id is ${ID} from ${TableName} error is ${e}`

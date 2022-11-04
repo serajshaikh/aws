@@ -76,10 +76,3 @@ resources:
                     - AttributeName: ID
                       KeyType: HASH
                 BillingMode: PAY_PER_REQUEST
-
-
-
-
-
-
-
