@@ -1,3 +1,5 @@
+# estudent/applyfor degree certificate/cash select(jisme upload karne ka aayega wo wala laga dena
+
 service: myserverlessproject
 
 provider:
@@ -61,8 +63,6 @@ functions:
                   method: POST
                   cors: true
 
-
-   
 resources:
     Resources:
         MyDynamoDbTable:
@@ -76,3 +76,11 @@ resources:
                     - AttributeName: ID
                       KeyType: HASH
                 BillingMode: PAY_PER_REQUEST
+
+
+# Hi team, yesterday
+# I have gone through the aws sqs document and sample code of Amazon SQS, i am familiar with sqs service, today i will do the task like connect s3 bucket with sqs..
+# • ListQueuesCommand
+# • CreateQueueCommand
+# • GetQueueUrlCommand
+# • DeleteQueueCommand
